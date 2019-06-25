@@ -1,10 +1,12 @@
 package com.pkt.assigment.conferencemanagement
 
+import com.pkt.assigment.conferencemanagement.track.ConferenceTrack
 import groovy.sql.DataSet
 import spock.lang.Specification
 
 import java.time.Duration
 
+import static com.pkt.assigment.conferencemanagement.Conference.SessionType.LUNCH
 import static org.junit.Assert.assertEquals
 
 class ConferenceTest extends Specification {
@@ -29,11 +31,12 @@ class ConferenceTest extends Specification {
         def conference = createConferenceObject()
 
         when:
-        int numberOfTracks = conference.getConferenceTracks()
+        List<ConferenceTrack> conferenceTracks = conference.getConferenceTracks()
 
         then:
-        assertEquals(2, numberOfTracks)
+        assertEquals(2, conferenceTracks.size())
+        conferenceTracks.forEach { assertEquals(Duration.ofHours(1), it.conferenceSessions.find { it.sessionType == LUNCH }.duration) }
     }
-    
+
 
 }
