@@ -1,7 +1,5 @@
 package com.pkt.a.c.proposal;
 
-import com.pkt.a.c.session.TalkSession;
-
 import java.time.Duration;
 import java.util.*;
 
@@ -98,10 +96,6 @@ public class Proposals {
 
         public void setDuration(final Duration duration) {
             this.duration = duration;
-        }
-
-        public TalkSession createTalSession() {
-            return new TalkSession(title, null, duration);
         }
 
         public String getTitle() {
