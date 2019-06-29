@@ -29,21 +29,9 @@ public class StartApplication {
             final String filePath = commandLine.getOptionValue("f");
             try {
                 final List<String> fileContent = IOUtils.readLines(new FileReader(new File(filePath)));
-                final Proposals proposals = ProposalCreator.createProposals(()
-                        -> fileContent.stream().map(line -> {
-                    String[] splittedLine = line.split(" ");
-                    String durationValue = splittedLine[splittedLine.length - 1];
-                    Duration duration = DurationParser.parse(durationValue);
-                    return Proposals.createProposal(line.replaceAll(durationValue, ""), duration);
-
-                }).collect(Collectors.toList()));
-                final Conference conference = new Conference(proposals, new ConferenceTrackCreatorImpl(new DefaultSessionsCreator() {
-                }));
-                conference.scheduleConferenceTalks(new ConferenceTrackSchedulerImpl(new SessionSchedulerImpl()));
-
+                final Conference conference = scheduleConference(createProposals(fileContent));
                 final ConferencePrinter conferencePrinter = new DefaultConferencePrinter(); //rename as stdoutconf filer
                 conferencePrinter.printConferenceSchedule(new PrintWriter(System.out), conference);
-
                 //TODO check if there is really scope of schedulign
             } catch (final FileNotFoundException e) {
                 e.printStackTrace();
@@ -54,5 +42,23 @@ public class StartApplication {
             final HelpFormatter helpFormatter = new HelpFormatter();
             helpFormatter.printHelp("java -jar conferencemanagement.jar ", options);
         }
+    }
+
+    private static Conference scheduleConference(final Proposals proposals) {
+        final Conference conference = new Conference(proposals, new ConferenceTrackCreatorImpl(new DefaultSessionsCreator() {
+        }));
+        conference.scheduleConferenceTalks(new ConferenceTrackSchedulerImpl(new SessionSchedulerImpl()));
+        return conference;
+    }
+
+    private static Proposals createProposals(final List<String> fileContent) {
+        return ProposalCreator.createProposals(()
+                -> fileContent.stream().map(line -> {
+            String[] splittedLine = line.split(" ");
+            String durationValue = splittedLine[splittedLine.length - 1];
+            Duration duration = DurationParser.parse(durationValue);
+            return Proposals.createProposal(line.replaceAll(durationValue, ""), duration);
+
+        }).collect(Collectors.toList()));
     }
 }

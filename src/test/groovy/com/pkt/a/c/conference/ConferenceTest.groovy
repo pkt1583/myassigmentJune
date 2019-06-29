@@ -11,8 +11,8 @@ import org.mockito.junit.MockitoJUnitRunner
 
 import java.time.Duration
 
+import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.mockito.Mockito.*
-import static org.testng.Assert.assertThrows
 
 @RunWith(MockitoJUnitRunner.class)
 class ConferenceTest extends GroovyTestCase {
@@ -30,7 +30,7 @@ class ConferenceTest extends GroovyTestCase {
         assertThrows(UnsupportedOperationException.class, { conferenceTracks.remove(0) })
     }
 
-   
+
     @Mock
     ConferenceTrackScheduler conferenceTrackScheduler
 

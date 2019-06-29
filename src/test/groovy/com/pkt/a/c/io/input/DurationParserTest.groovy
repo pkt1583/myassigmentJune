@@ -6,7 +6,7 @@ import org.junit.Test
 import java.time.Duration
 
 import static junit.framework.Assert.assertEquals
-import static org.testng.Assert.assertThrows
+import static org.junit.jupiter.api.Assertions.assertThrows
 
 class DurationParserTest {
     @Test
