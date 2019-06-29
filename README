@@ -1,1 +1,4 @@
-
+1) Run mvn clean package  from command prompt
+2) Change directory to target directory
+3) Run the jar file with java -jar conferencemanager.jar -f <absolute path of input file>
+4) The output will be displayed on console

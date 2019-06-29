@@ -8,5 +8,4 @@ import java.util.List;
 public interface ConferenceTrackCreator {
     List<ConferenceTrack> computeConferenceTracks(Proposals proposals, Duration duration);
 
-    void populateDefaultSlots(final ConferenceTrack conferenceTrack);
 }

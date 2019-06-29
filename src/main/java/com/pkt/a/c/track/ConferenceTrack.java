@@ -14,7 +14,7 @@ public class ConferenceTrack {
     public final SortedSet<Session> conferenceSessions = new TreeSet<>(Comparator.comparing(Session::getSessionStartTime));
     private final int trackIndex;
 
-    ConferenceTrack(final int trackIndex) {
+    public ConferenceTrack(final int trackIndex) {
         this.trackIndex = trackIndex;
     }
 

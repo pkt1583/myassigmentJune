@@ -8,6 +8,7 @@ import com.pkt.a.c.proposal.ProposalCreator;
 import com.pkt.a.c.proposal.Proposals;
 import com.pkt.a.c.scheduler.session.SessionSchedulerImpl;
 import com.pkt.a.c.scheduler.track.ConferenceTrackSchedulerImpl;
+import com.pkt.a.c.session.DefaultSessionsCreator;
 import com.pkt.a.c.track.ConferenceTrackCreatorImpl;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.IOUtils;
@@ -36,7 +37,8 @@ public class StartApplication {
                     return Proposals.createProposal(line.replaceAll(durationValue, ""), duration);
 
                 }).collect(Collectors.toList()));
-                final Conference conference = new Conference(proposals, new ConferenceTrackCreatorImpl());
+                final Conference conference = new Conference(proposals, new ConferenceTrackCreatorImpl(new DefaultSessionsCreator() {
+                }));
                 conference.scheduleConferenceTalks(new ConferenceTrackSchedulerImpl(new SessionSchedulerImpl()));
 
                 final ConferencePrinter conferencePrinter = new DefaultConferencePrinter(); //rename as stdoutconf filer

@@ -1,12 +1,14 @@
 package com.pkt.a.c.scheduler.session;
 
 import com.pkt.a.c.proposal.Proposals;
+import com.pkt.a.c.scheduler.session.exception.NetworkingSchedulingException;
 import com.pkt.a.c.session.EmptySlot;
 import com.pkt.a.c.session.NetworkingSession;
 import com.pkt.a.c.session.Session;
 import com.pkt.a.c.session.TalkSession;
 import com.pkt.a.c.track.ConferenceTrack;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.pkt.a.c.conference.Conference.END_TIME;
@@ -43,13 +45,16 @@ public class SessionSchedulerImpl implements SessionScheduler {
         final List<Session> nextAvailableSlot = conferenceTrack.getEmptySlots();
         final NetworkingSession networkingSession = new NetworkingSession(END_TIME);
         if (nextAvailableSlot.size() > 1) {
-            throw new RuntimeException("Some issue with networking slot");
+            throw new NetworkingSchedulingException("Some issue with networking slot");
         } else if ((nextAvailableSlot.size() == 0)) {
             networkingSession.setSessionStartTime(END_TIME);
         } else {
             final EmptySlot availableSlot = (EmptySlot) nextAvailableSlot.get(0);
+            if (availableSlot.getSessionStartTime().isAfter(LocalTime.of(17, 0, 0))) {
+                throw new NetworkingSchedulingException("Available Slot exceeded max Networking time");
+            }
             conferenceTrack.conferenceSessions.remove(availableSlot);
-            if (availableSlot.getSessionStartTime().isAfter(NETWORKING_START_TIME)) {
+            if (availableSlot.getSessionStartTime().compareTo(NETWORKING_START_TIME) >= 0) {
                 networkingSession.setSessionStartTime(availableSlot.getSessionStartTime());
             }
         }

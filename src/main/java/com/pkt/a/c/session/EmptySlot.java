@@ -7,8 +7,8 @@ import java.time.LocalTime;
 
 
 public class EmptySlot extends Session {
-    public EmptySlot(final String title, final LocalTime sessionStartTime, final Duration duration) {
-        super(title, sessionStartTime, duration);
+    public EmptySlot(final LocalTime sessionStartTime, final Duration duration) {
+        super(null, sessionStartTime, duration);
     }
 
     @Override
